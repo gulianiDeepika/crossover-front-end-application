@@ -1,0 +1,70 @@
+<div class="container-fluid">
+  <div class="row">
+    <div ng-include src="'views/header.html'"></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-lg-6">
+      {{customerInfo.id}}
+    </div>
+    <div class="col-xs-12 col-lg-6">
+      {{customerInfo.customername}}
+    </div>
+    <div class="col-xs-12 col-lg-6">
+      {{customerInfo.productname}}
+    </div>
+    <div class="col-xs-12 col-lg-6">
+      {{customerInfo.status}}
+    </div>
+    <div class="col-xs-12 col-lg-6">
+      <div ng-repeat="address in customerInfo.addresses">
+        <span>{{address.id}}</span>
+        <span>{{address.type}}</span>
+        <span>{{address.street1}}</span>
+        <span>{{address.street2}}</span>
+        <span>{{address.city}}</span>
+        <span>{{address.state}}</span>
+        <span>{{address.country}}</span>
+        <span>{{address.pincode}}</span>
+      </div>
+    </div>
+<!-- Customer Name
+Customer ID
+Product Name
+Status
+Phone Number
+Skype Call (for desktop/mobile/tab) and phone call (only for mobile).
+Email Address
+Send Email feature (for desktop/tab/mobile)
+Address -->
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="" data-toggle="#notes">Notes</a></li>
+                    <li><a href="" data-toggle="#visits">Visits</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="notes">
+                        <h4>Notes Tab</h4>
+                        <div>{{customerInfo.visit.notes}}</div>
+                    </div>
+                    <div class="tab-pane fade" id="visits">
+                        <h4>Visits Tab</h4>
+                        <div ng-repeat="comm in customerInfo.communications">
+                          <div>{{comm.id}}</div>
+                          <div>{{comm.category}}</div>
+                          <div>{{comm.type}}</div>
+                          <div>{{comm.value}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
