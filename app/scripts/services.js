@@ -12,6 +12,7 @@ angular.module('sra.services', ['lbServices'])
         } else {
           if ($window.sessionStorage.sessionId !== null) {
             this.currentUser = $window.sessionStorage.sessionId;
+            return this.currentUser;
           } else {
             console.log('User.getCurrent() err');
             return null;

@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('sra.controllers', ['angular-loading-bar', 'ui.grid', 'ui.grid.edit', 'sra.services'])
+angular.module('sra.controllers', ['angular-loading-bar', 'sra.services'])
 /*
  * 'DashCtrl' controller
 */
 .controller('DashCtrl', function($scope, $routeParams, User, $location, AppAuth, $q, $window, $http) {
   AppAuth.ensureHasCurrentUser(User);
-    var UserPromise = $q.when(AppAuth.currentUser.$promise || AppAuth.currentUser);
+    var UserPromise = $q.when(AppAuth.currentUser || AppAuth.currentUser.$promise);
 
     UserPromise.then(function(user){
       console.log('user');
@@ -119,9 +119,9 @@ angular.module('sra.controllers', ['angular-loading-bar', 'ui.grid', 'ui.grid.ed
             str = 'PM';
             timeStr = (hours - 12) + ':' + minutes + ' ' + str;
           }
-          console.log(timeStr);
           return timeStr;
         };
+
         $scope.saveVisit = function() {
           var date = new Date();
           $http.post('http://localhost:8080/SRA/customer/savevisit',
@@ -147,17 +147,4 @@ angular.module('sra.controllers', ['angular-loading-bar', 'ui.grid', 'ui.grid.ed
     }, function(){
       console.log('error');
     });
-})
-
-/*
- * 'range' filter
-*/
-.filter('range', function() {
-  return function(input, total) {
-    total = parseInt(total);
-    for (var i=0; i < total; ++i) {
-      input.push(i);
-    }
-    return input;
-  };
 });

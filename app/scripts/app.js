@@ -8,6 +8,9 @@ angular.module('crossoverApp', [
     $rootScope.options = [
       {text: 'MENU_HOME', url:"home", class:"home", iconClass:"glyphicon glyphicon-user", action: function() {
         $location.path('/home');
+      }},
+      {text: 'LOGIN', url:"home", class:"login", iconClass:"glyphicon glyphicon-user", action: function() {
+        $location.path('/login');
       }}
   ];
 
@@ -33,6 +36,12 @@ angular.module('crossoverApp', [
 
 .config(function ($routeProvider, $locationProvider, $httpProvider) {
 
+  $routeProvider.when('/login', {
+    templateUrl: 'views/login.html',
+    controller: 'LoginCtrl',
+    bodyclass: 'login-view'
+  });
+
   $routeProvider.when('/home', {
     templateUrl: 'views/home.html',
     controller: 'DashCtrl',
@@ -48,12 +57,6 @@ angular.module('crossoverApp', [
         $rootScope.currentCustomerId =  $route.current.params.id;
      }
    }
-  });
-
-  $routeProvider.when('/login', {
-    templateUrl: 'views/login.html',
-    controller: 'LoginCtrl',
-    bodyclass: 'login-view'
   });
 
   $routeProvider.when('/logout', {
