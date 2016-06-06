@@ -3,24 +3,28 @@
     <div ng-include src="'views/header.html'"></div>
   </div>
 </div>
-
+<div class="container">
+  <div class="row">
+    <a href="/" class="btn btn-info btn-app col-xs-12 col-lg-2 col-s-4">Show all Users</a>
+  </div>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-lg-6">
-      {{customerInfo.id}}
+      <label><strong>Customer Id : </strong></label> {{customerInfo.id}}
     </div>
     <div class="col-xs-12 col-lg-6">
-      {{customerInfo.customername}}
+      <label><strong>Customer Name : </strong></label> {{customerInfo.customername}}
     </div>
     <div class="col-xs-12 col-lg-6">
-      {{customerInfo.productname}}
+      <label><strong>Product Name : </strong></label> {{customerInfo.productname}}
     </div>
     <div class="col-xs-12 col-lg-6">
-      {{customerInfo.status}}
+      <label><strong>Status : </h3></strong><span class="{{customerInfo.status}} status"> {{customerInfo.status}}</span>
     </div>
     <div class="col-xs-12 col-lg-6">
       <div ng-repeat="address in customerInfo.addresses">
-        <span>{{address.id}}</span>
+        <label>Address {{address.id}}</label>
         <span>{{address.type}}</span>
         <span>{{address.street1}}</span>
         <span>{{address.street2}}</span>
@@ -44,23 +48,26 @@ Address -->
     <div class="col-xs-12">
       <div class="panel panel-default">
             <div class="panel-body">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="" data-toggle="#notes">Notes</a></li>
-                    <li><a href="" data-toggle="#visits">Visits</a></li>
+                <ul class="nav nav-pills">
+                    <li class="active"><a show-tab href="#notes" data-toggle="tab">Notes</a></li>
+                    <li><a show-tab href="#visits" data-toggle="tab">Visits</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="notes">
-                        <h4>Notes Tab</h4>
-                        <div>{{customerInfo.visit.notes}}</div>
+                        <!-- <div>{{customerInfo.visit.notes}}</div> -->
+                        <textarea type="text" class="form-control cust-notes" rows="10" ng-model="textContent"></textarea>
+                        <select ng-options="item for item in statusOptions" class="form-control cust-status" ng-model="selectedStatus"></select>
+                        <button class="btn btn-app" ng-click="saveNotes(customerInfo.id)">Save</button>
                     </div>
                     <div class="tab-pane fade" id="visits">
-                        <h4>Visits Tab</h4>
-                        <div ng-repeat="comm in customerInfo.communications">
-                          <div>{{comm.id}}</div>
-                          <div>{{comm.category}}</div>
-                          <div>{{comm.type}}</div>
-                          <div>{{comm.value}}</div>
+                        <textarea type="text" class="form-control cust-notes" rows="10" ng-model="visitContent"></textarea>
+                        <div ng-repeat="comm in customerInfo.communications" class="col-xs-12 col-s-6 col-lg-4">
+                          <span>{{comm.category}}</span>
+                          <span>{{comm.type}}</span>
+                          <span ng-class="comm.type == 'Skype'"><i class="fa fa-skype" aria-hidden="true"></i></span>
+                          <span>{{comm.value}}</span>
                         </div>
+                        <div><button class="btn btn-app" ng-click="saveVisit()">Save</button></div>
                     </div>
                 </div>
             </div>

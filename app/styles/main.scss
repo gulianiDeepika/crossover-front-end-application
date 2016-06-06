@@ -11,11 +11,28 @@ $theme_button_color: #84b899;
 
 .sales-rep {
   /*** geneal rules for theme and buttons **/
-  //height: 100%;
-  //background-color: $theme_background_color;
+  .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    background-color: $theme_button_color;
+  }
+  .navbar-brand h2 { color: #FFFFFF; }
+  .status { display: inline-block; padding: 10px;}
+  .InProgress {
+    background-color: yellow;
+  }
+  .OrderPlaced {
+    background-color: blue;
+  }
+  .New {
+    background-color: green;
+  }
+  .Rejected {
+    background-color: red;
+  }
+  .Support {
+    background-color: orange;
+  }
   .btn-app {
     background-color: $theme_button_color;
-    border-radius: 0;
     border-color: $theme_button_color;
   }
   /*** LOGIN ***/

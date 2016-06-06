@@ -15,7 +15,8 @@ angular.module('sra.controllers', ['angular-loading-bar', 'ui.grid', 'ui.grid.ed
         console.log($window.sessionStorage.sessionId);
         console.log(res);
         $scope.customerList = res.data.data;
-        //$('.master-list').DataTable();
+        $scope.sortType     = 'id'; // set the default sort type
+        $scope.sortReverse  = false;  // set the default sort order
       }, function(err){
         console.log('error');
       });
@@ -45,6 +46,10 @@ angular.module('sra.controllers', ['angular-loading-bar', 'ui.grid', 'ui.grid.ed
       var next = $location.nextAfterLogin || '/';
       $location.nextAfterLogin = null;
       $window.sessionStorage.sessionId = res.data.sessionId;
+      $window.sessionStorage.user = res.data.data;
+      $rootScope.user = {};
+      $rootScope.user.firstname = res.data.data.firstname;
+      $rootScope.user.lastname = res.data.data.lastname;
       console.log(res);
       AppAuth.currentUser = res.data.data;
 
@@ -81,13 +86,64 @@ angular.module('sra.controllers', ['angular-loading-bar', 'ui.grid', 'ui.grid.ed
       console.log('get user deatils', $rootScope.currentCustomerId);
       $http.post('http://localhost:8080/SRA/customer/details',
       { sessionId: $window.sessionStorage.sessionId,
-        customerid : $rootScope.currentCustomerId }).then(function(res){
-        console.log($window.sessionStorage.sessionId);
-        console.log(res);
+        customerid : $rootScope.currentCustomerId }
+      ).then(function(res){
         $scope.customerInfo = res.data.data;
-      }, function(err){
-        console.log('error');
+        $scope.textContent = $scope.customerInfo.notes ? $scope.customerInfo.notes : "";
+        $scope.statusOptions = ["New", "InProgress", "OrderPlaced", "Support", "Cancelled", "Rejected"];
+        $scope.selectedStatus = $scope.customerInfo.status;
+        $scope.visitContent = $scope.customerInfo.visit ? $scope.customerInfo.visit.notes : "";
+        //console.log($scope.customerInfo);
+
+        $scope.saveNotes = function() {
+          $http.post('http://localhost:8080/SRA/customer/savenotes',
+          { "sessionId" : $window.sessionStorage.sessionId,
+            "customerid" : $rootScope.currentCustomerId,
+            "status" : $scope.selectedStatus,
+            "notes" : $scope.textContent })
+          .then(function(res){
+            console.log(res);
+          }, function(){
+            console.log('error in saving notes');
+          });
+        };
+
+        function getTime(date) {
+          var timeStr = "",
+              hours = date.getHours(),
+              minutes = date.getMinutes(),
+              str = 'AM';
+          if (hours < 12) {
+            timeStr = hours + ':' + minutes + ' ' + str;
+          } else {
+            str = 'PM';
+            timeStr = (hours - 12) + ':' + minutes + ' ' + str;
+          }
+          console.log(timeStr);
+          return timeStr;
+        };
+        $scope.saveVisit = function() {
+          var date = new Date();
+          $http.post('http://localhost:8080/SRA/customer/savevisit',
+          { "sessionId" : $window.sessionStorage.sessionId,
+            "customerid" : $rootScope.currentCustomerId,
+            "visit" : {
+                "date" : date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate(),
+                "time" : getTime(date),
+                "action" : "Lead",
+                "notes" : $scope.visitContent
+              }
+            })
+          .then(function(res){
+            console.log(res);
+          }, function(){
+            console.log('error in saving notes');
+          });
+        };
+       }, function(err){
+          console.log('error');
       });
+
     }, function(){
       console.log('error');
     });
